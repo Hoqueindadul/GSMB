@@ -1,5 +1,12 @@
 #include "system.h"
+
 void admin()
 {
-    printf("\nThis is admin panel");
+    enum state status;
+    status = login();
+    if (status == pass)
+
+        printf("\nPass");
+    else
+        printf("\nFail");
 }
