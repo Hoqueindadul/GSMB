@@ -1,51 +1,70 @@
 #include "system.h"
 
-struct entered_data
-{
-    long int password;
-    char id[20];
-};
+
 void create_login()
 {
+
+    details *data; // pointer variable of details structure
+    data = (details *)malloc(sizeof(details));
     FILE *fp;
-    if(mt_file("files/user.bin"))
+    if (mt_file("files/user.dat"))
     {
-        fp=fopen("/files/user.bin","w");
-    }
-    else{
-        fp=fopen("/files/user.bin","a");
-
-    }
-}
-
-enum state login()
-{
-    struct entered_data *input;
-    input = (struct entered_data *)malloc(sizeof(struct entered_data));
-
-    FILE *fp;
-
-    fp = fopen("/files/user.bin", "r");
-    if (mt_file("files/user.bin"))//cheking if there is data or not;
-    {
-        printf("\nNo Admin Found.");
-        printf("\nCreate an admin:");
-        create_login();
+        fp = fopen("files/user.dat", "w");
     }
     else
     {
-        printf("Enter user name:");
-        gets(input->id);
-        printf("Enter password:");
-        scanf("%ld", &input->password);
+        fp = fopen("files/user.dat", "a");
+    }
+    printf("\nEnter User Name:");
+    fflush(stdin);
+    fgets(data->id, 20, stdin);
+    printf("\nCreate a Password:");
+    fflush(stdin);
+    fgets(data->password, 20, stdin);
+    fwrite(data, sizeof(details), 1, fp);
+    fclose(fp);
+    free(data);
+}
 
-        fread(&det, sizeof(det), 1, fp);
+test login()
+{
+    int n, flag = 0;
+    if (mt_file("files/user.dat")) // cheking if there is data or not;
+    {
+        printf("\nNo Admin Found.");
+        printf("\nCreate an admin:");
+        printf("\nPress 1 to create an admin account.\nPress any key to go back.\n");
+        if (scanf("%d", &n) == 1)
+        {
+            create_login();
+            return pass;
+        }
+        else
+            return fail; // have to chnage this.
+    }
+    else
+    {
+        details *data = (details *)malloc(sizeof(details));
+        entered_data *input = (entered_data *)malloc(sizeof(entered_data));
+
+        FILE *fp = fopen("files/user.dat", "r");
+
+        printf("\nEnter User Name:");
+        fflush(stdin);
+        fgets(input->id, 20, stdin);
+
+        printf("\nEnter Password:");
+        fflush(stdin);
+        fgets(input->password, 20, stdin);
+
         rewind(fp);
+        fread(data, sizeof(details), 1, fp);
+
         while (!feof(fp))
         {
-            if (input->id == det.id)
+            if (strcmp(input->id,data->id)==0)
             {
-                if (input->password == det.password)
+                if (strcmp(input->password,data->password)==0)
                 {
                     printf("\nAuthorization Sucessfull.");
                     return pass;
@@ -55,11 +74,18 @@ enum state login()
                     printf("\nPassword didn't match.");
                     return fail;
                 }
+                flag = 1;
             }
             else
-                fread(&det, sizeof(det), 1, fp);
+                fread(data, sizeof(details), 1, fp);
         }
+        free(input);
+        free(data);
+        fclose(fp);
     }
-    fclose(fp);
-    free(input);
+    if (flag == 0)
+    {
+        printf("\nUser not Found");
+        return fail;
+    }
 }
