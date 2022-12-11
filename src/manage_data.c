@@ -10,19 +10,22 @@ void manage_data() // manage data from ADMIN
     printf("\n|(1)Add|\t\t\t|(2)Modify|\t\t\t|(0)Go Back|");
     printf("\n--------\t\t\t-----------\t\t\t---------");
     reset();
-    printf("\nEnter Your choice:");
+    printf("\n>");
     scanf("%d", &ch);
     switch (ch)
     {
-    case 1: // create_data();
-        break;
-    case 2: // modify_data();
-        break;
-    case 0:
-        break;
-    default:{red();
-        printf("\nWrong Input");
-        reset();
-    }
+        case 1:
+            create_data();//in student.c
+            break;
+        case 2: // modify_data();
+            break;
+        case 0:
+            break;
+        default:
+        {
+            red();
+            printf("\nWrong Input");
+            reset();
+        }
     }
 }
