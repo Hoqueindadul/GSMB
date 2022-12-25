@@ -6,6 +6,8 @@ void create_data()
     student_data *data = (student_data *)malloc(sizeof(student_data));
     FILE *fp;
     c_printf("--ADD NEW DATA--");
+   /*when we are adding new student data, we will add marks too by  add_marks fucntion.
+    which will create files with name concating stream and sem names.*/
     if (fopen("files/student.dat", "r") == NULL)
         fp = fopen("files/student.dat", "w");
     else
@@ -17,14 +19,14 @@ void create_data()
         scanf("%ld", &data->reg_no);
         printf("Enter Student Name:");
         fflush(stdin);
-        fgets(data->name, 50, stdin);
+        fgets(data->name, sizeof(data->name), stdin);
         printf("Enter Student Stream:");
         fflush(stdin);
-        fgets(data->stream,5, stdin);
+        fgets(data->stream,sizeof(data->stream), stdin);
         printf("Enter Student Sem:");
         fflush(stdin);
-        fgets(data->sem,3,stdin);
-        add_marks(data->reg_no,data->stream,data->sem);
+        fgets(data->sem,sizeof(data->sem),stdin);
+        add_marks(data->reg_no,data->stream,data->sem);//marks of stuents
         fwrite(data, sizeof(student_data), 1, fp);
         printf("\nDo you want to add more ?(Y/n)");
         fflush(stdin);
